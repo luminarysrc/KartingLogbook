@@ -134,7 +134,7 @@ function handleStepperClick(btn) {
  */
 function getRaces() {
   return new Promise((resolve) => {
-    if (!CS) {
+    if (!CS || !CS.isSupported) {
       // Fallback на localStorage
       try {
         const data = localStorage.getItem(STORAGE_KEY);
@@ -179,9 +179,13 @@ function saveRaces(races) {
   const json = JSON.stringify(races);
 
   return new Promise(async (resolve, reject) => {
-    if (!CS) {
-      localStorage.setItem(STORAGE_KEY, json);
-      resolve();
+    if (!CS || !CS.isSupported) {
+      try {
+        localStorage.setItem(STORAGE_KEY, json);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
       return;
     }
 
@@ -279,8 +283,9 @@ async function handleFormSubmit(e) {
     showToast('Заезд сохранён ✓');
     resetForm();
   } catch (err) {
-    showToast('Ошибка сохранения');
-    console.error(err);
+    let msg = err && err.message ? err.message : String(err);
+    showToast('Ошибка: ' + msg);
+    console.error('Save Error:', err);
   }
 }
 
