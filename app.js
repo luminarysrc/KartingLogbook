@@ -129,12 +129,13 @@ function handleStepperClick(btn) {
 
 /**
  * Возвращает Promise с массивом сохранённых заездов.
+ * Поддерживает склейку чанков (для обхода лимита в 4096 байт) и старый формат.
  * @returns {Promise<Array>}
  */
 function getRaces() {
   return new Promise((resolve) => {
     if (!CS) {
-      // Fallback на localStorage для отладки вне Telegram
+      // Fallback на localStorage
       try {
         const data = localStorage.getItem(STORAGE_KEY);
         resolve(data ? JSON.parse(data) : []);
@@ -142,43 +143,67 @@ function getRaces() {
       return;
     }
 
-    CS.getItem(STORAGE_KEY, (err, value) => {
-      if (err || !value) {
-        resolve([]);
+    CS.getItem(STORAGE_KEY + '_meta', (err, meta) => {
+      if (err || !meta) {
+        // Пробуем старый формат (один ключ)
+        CS.getItem(STORAGE_KEY, (err2, value) => {
+          if (err2 || !value) return resolve([]);
+          try { resolve(JSON.parse(value)); } catch { resolve([]); }
+        });
         return;
       }
-      try {
-        resolve(JSON.parse(value));
-      } catch {
-        resolve([]);
-      }
+      
+      const count = parseInt(meta, 10);
+      const keys = [];
+      for (let i = 0; i < count; i++) keys.push(STORAGE_KEY + '_' + i);
+      
+      CS.getItems(keys, (err3, vals) => {
+        if (err3 || !vals) return resolve([]);
+        let json = '';
+        for (let i = 0; i < count; i++) {
+          json += (vals[STORAGE_KEY + '_' + i] || '');
+        }
+        try { resolve(JSON.parse(json)); } catch { resolve([]); }
+      });
     });
   });
 }
 
 /**
  * Сохраняет массив заездов в CloudStorage.
+ * Автоматически разбивает JSON на чанки по 4000 символов.
  * @param {Array} races
  * @returns {Promise<void>}
  */
 function saveRaces(races) {
   const json = JSON.stringify(races);
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (!CS) {
       localStorage.setItem(STORAGE_KEY, json);
       resolve();
       return;
     }
 
-    CS.setItem(STORAGE_KEY, json, (err) => {
-      if (err) {
-        console.error('Ошибка сохранения:', err);
-        reject(err);
-      } else {
-        resolve();
-      }
+    const chunks = [];
+    for (let i = 0; i < json.length; i += 4000) {
+      chunks.push(json.slice(i, i + 4000));
+    }
+
+    const setItemAsync = (k, v) => new Promise((res, rej) => {
+      CS.setItem(k, v, (err) => err ? rej(err) : res());
     });
+
+    try {
+      await setItemAsync(STORAGE_KEY + '_meta', chunks.length.toString());
+      for (let i = 0; i < chunks.length; i++) {
+        await setItemAsync(STORAGE_KEY + '_' + i, chunks[i]);
+      }
+      resolve();
+    } catch (err) {
+      console.error('Ошибка сохранения в CloudStorage:', err);
+      reject(err);
+    }
   });
 }
 
