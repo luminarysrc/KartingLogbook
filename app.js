@@ -193,16 +193,18 @@ function saveRaces(races) {
 async function handleFormSubmit(e) {
   e.preventDefault();
 
+  const sessionName = document.getElementById('input-session-name').value.trim();
   const laptime = document.getElementById('input-laptime').value.trim();
 
-  if (!laptime) {
-    showToast('Заполните время');
+  if (!sessionName || !laptime) {
+    showToast('Заполните название и время');
     return;
   }
 
   const race = {
     id:            Date.now(),
     date:          new Date().toISOString(),
+    sessionName:   sessionName,
     laptime:       laptime,
     notes:         document.getElementById('input-notes').value.trim(),
     
@@ -262,6 +264,7 @@ async function handleFormSubmit(e) {
  */
 function resetForm() {
   document.getElementById('race-form').reset();
+  setSessionDate();
 
   // Возвращаем ползунки к дефолтам
   const sliders = document.querySelectorAll('#race-form input[type="range"]');
@@ -270,6 +273,17 @@ function resetForm() {
     s.value = s.defaultValue;
     syncSliderValue(s);
   });
+}
+
+/**
+ * Устанавливает текущую дату как название выезда по умолчанию
+ */
+function setSessionDate() {
+  const input = document.getElementById('input-session-name');
+  if (!input) return;
+  const d = new Date();
+  const dateStr = d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  input.value = `Выезд ${dateStr}`;
 }
 
 // ——————————————————————————————————————————————
@@ -302,7 +316,7 @@ function renderHistory(races) {
     return `
       <div class="race-card" style="animation-delay:${i * .06}s">
         <div class="race-card__header">
-          <span class="race-card__track">Время:</span>
+          <span class="race-card__track">${esc(r.sessionName || r.track || 'Заезд')}</span>
           <span class="race-card__time">${esc(r.laptime)}</span>
         </div>
         <div class="race-card__date">${dateStr}</div>
@@ -359,12 +373,13 @@ function renderSetups(races) {
 
   container.innerHTML = setups.map((r, i) => `
     <div class="setup-card" style="animation-delay:${i * .06}s">
-      <div class="setup-card__track">⏱ ${esc(r.laptime)}</div>
+      <div class="setup-card__track">🏎 ${esc(r.sessionName || r.track || 'Заезд')}</div>
       <div class="setup-card__params">
         <div>FL: <span>${r.flCold || '-'} / ${r.flHot || '-'}</span></div>
         <div>FR: <span>${r.frCold || '-'} / ${r.frHot || '-'}</span></div>
         <div>RL: <span>${r.rlCold || '-'} / ${r.rlHot || '-'}</span></div>
         <div>RR: <span>${r.rrCold || '-'} / ${r.rrHot || '-'}</span></div>
+        <div>Время: <span>${esc(r.laptime)}</span></div>
       </div>
       <details class="race-card__extended-setup" style="margin-top: 10px;">
         <summary>Полный сетап</summary>
@@ -465,6 +480,7 @@ function showToast(message) {
 document.addEventListener('DOMContentLoaded', () => {
   // Инициализация
   initApp();
+  setSessionDate();
 
   // Навигация
   document.getElementById('bottom-nav').addEventListener('click', (e) => {
