@@ -28,12 +28,6 @@
       <h1 class="page-title">Новый заезд</h1>
 
       <form id="race-form" autocomplete="off">
-        <!-- Трасса -->
-        <div class="field">
-          <label for="input-track">Трасса</label>
-          <input id="input-track" type="text" placeholder="Название трассы" required />
-        </div>
-
         <!-- Лучшее время -->
         <div class="field">
           <label for="input-laptime">Лучшее время</label>
@@ -45,25 +39,40 @@
 
         <!-- Секция 1: Давление -->
         <details class="setup-section" open>
-          <summary class="setup-section__header">Давление колес</summary>
+          <summary class="setup-section__header">Давление колес (Бар)</summary>
           <div class="setup-section__content">
-            <div class="field">
-              <label for="slider-fp">Давление спереди (бар)</label>
-              <div class="stepper">
-                <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="-1">−</button>
-                <input id="slider-fp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
-                <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="1">+</button>
-                <span class="stepper__value" id="val-fp">1.00</span>
+            <div class="tire-grid">
+              <!-- FL -->
+              <div class="tire-card">
+                <div class="tire-card__title">Переднее левое</div>
+                <div class="tire-card__inputs">
+                  <input type="number" id="input-fl-cold" step="0.01" placeholder="Холод" />
+                  <input type="number" id="input-fl-hot" step="0.01" placeholder="Горяч" />
+                </div>
               </div>
-            </div>
-
-            <div class="field">
-              <label for="slider-rp">Давление сзади (бар)</label>
-              <div class="stepper">
-                <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="-1">−</button>
-                <input id="slider-rp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
-                <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="1">+</button>
-                <span class="stepper__value" id="val-rp">1.00</span>
+              <!-- FR -->
+              <div class="tire-card">
+                <div class="tire-card__title">Переднее правое</div>
+                <div class="tire-card__inputs">
+                  <input type="number" id="input-fr-cold" step="0.01" placeholder="Холод" />
+                  <input type="number" id="input-fr-hot" step="0.01" placeholder="Горяч" />
+                </div>
+              </div>
+              <!-- RL -->
+              <div class="tire-card">
+                <div class="tire-card__title">Заднее левое</div>
+                <div class="tire-card__inputs">
+                  <input type="number" id="input-rl-cold" step="0.01" placeholder="Холод" />
+                  <input type="number" id="input-rl-hot" step="0.01" placeholder="Горяч" />
+                </div>
+              </div>
+              <!-- RR -->
+              <div class="tire-card">
+                <div class="tire-card__title">Заднее правое</div>
+                <div class="tire-card__inputs">
+                  <input type="number" id="input-rr-cold" step="0.01" placeholder="Холод" />
+                  <input type="number" id="input-rr-hot" step="0.01" placeholder="Горяч" />
+                </div>
               </div>
             </div>
           </div>

@@ -182,6 +182,62 @@ body {
   animation: fadeIn .3s ease;
 }
 
+/* ---------- Tire Grid ---------- */
+.tire-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.tire-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--field-radius);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tire-card__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--tg-theme-hint-color);
+  text-align: center;
+}
+
+.tire-card__inputs {
+  display: flex;
+  gap: 6px;
+}
+
+.tire-card__inputs input {
+  width: 100%;
+  padding: 8px 6px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 6px;
+  background: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+  font-size: 0.85rem;
+  outline: none;
+  text-align: center;
+  transition: border-color var(--transition-fast);
+  appearance: textfield;
+}
+
+.tire-card__inputs input:focus {
+  border-color: var(--tg-theme-button-color);
+}
+
+/* Remove arrows from number input */
+.tire-card__inputs input::-webkit-outer-spin-button,
+.tire-card__inputs input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* ---------- Fields ---------- */
 .field {
   margin-bottom: 16px;
