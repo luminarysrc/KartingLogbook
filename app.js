@@ -218,7 +218,7 @@ async function handleFormSubmit(e) {
     
     // Передняя ось
     fTrack:        document.getElementById('input-f-track').value.trim(),
-    caster:        document.getElementById('select-caster').value,
+    caster:        document.getElementById('input-caster').value.trim(),
     camber:        document.getElementById('input-camber').value.trim(),
     toe:           document.getElementById('input-toe').value.trim(),
     ackermann:     document.getElementById('select-ackermann').value,
