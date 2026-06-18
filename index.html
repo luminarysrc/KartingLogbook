@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Karting Logbook — бортовой журнал картингиста в Telegram" />
+  <title>Karting Logbook</title>
+
+  <!-- Telegram Web App SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ======== Экран загрузки ======== -->
+  <div id="splash" class="splash">
+    <div class="splash__icon">🏎️</div>
+    <div class="splash__title">Karting Logbook</div>
+    <div class="splash__sub">Загрузка…</div>
+  </div>
+
+  <!-- ======== Основное приложение (скрыто до инициализации) ======== -->
+  <div id="app" class="app hidden">
+
+    <!-- ——— Вкладка 1: Новый заезд ——— -->
+    <section id="tab-race" class="tab-content active">
+      <h1 class="page-title">Новый заезд</h1>
+
+      <form id="race-form" autocomplete="off">
+        <!-- Трасса -->
+        <div class="field">
+          <label for="input-track">Трасса</label>
+          <input id="input-track" type="text" placeholder="Название трассы" required />
+        </div>
+
+        <!-- Лучшее время -->
+        <div class="field">
+          <label for="input-laptime">Лучшее время</label>
+          <input id="input-laptime" type="text" placeholder="0:00.000" required />
+        </div>
+
+        <!-- Разделитель: Сетап -->
+        <div class="section-divider">Сетап карта</div>
+
+        <!-- Давление спереди -->
+        <div class="field">
+          <label for="slider-fp">Давление спереди (бар)</label>
+          <div class="stepper">
+            <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="-1">−</button>
+            <input id="slider-fp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
+            <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="1">+</button>
+            <span class="stepper__value" id="val-fp">1.00</span>
+          </div>
+        </div>
+
+        <!-- Давление сзади -->
+        <div class="field">
+          <label for="slider-rp">Давление сзади (бар)</label>
+          <div class="stepper">
+            <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="-1">−</button>
+            <input id="slider-rp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
+            <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="1">+</button>
+            <span class="stepper__value" id="val-rp">1.00</span>
+          </div>
+        </div>
+
+        <!-- Жёсткость пружин клапанов -->
+        <div class="field">
+          <label for="slider-spring">Жёсткость пружин клапанов</label>
+          <div class="stepper">
+            <button type="button" class="stepper__btn" data-target="slider-spring" data-dir="-1">−</button>
+            <input id="slider-spring" type="range" min="1" max="10" step="1" value="5" />
+            <button type="button" class="stepper__btn" data-target="slider-spring" data-dir="1">+</button>
+            <span class="stepper__value" id="val-spring">5</span>
+          </div>
+        </div>
+
+        <!-- Заметки -->
+        <div class="field">
+          <label for="input-notes">Заметки</label>
+          <textarea id="input-notes" rows="3" placeholder="Погода, покрытие, ощущения…"></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" id="btn-save">💾 Сохранить заезд</button>
+      </form>
+    </section>
+
+    <!-- ——— Вкладка 2: История ——— -->
+    <section id="tab-history" class="tab-content">
+      <h1 class="page-title">История заездов</h1>
+      <div id="history-list" class="history-list">
+        <p class="empty-state">Пока нет записей</p>
+      </div>
+    </section>
+
+    <!-- ——— Вкладка 3: Сетапы ——— -->
+    <section id="tab-setups" class="tab-content">
+      <h1 class="page-title">Сохранённые сетапы</h1>
+      <div id="setups-list" class="setups-list">
+        <p class="empty-state">Сетапы появятся после сохранения заездов</p>
+      </div>
+    </section>
+
+    <!-- ——— Нижняя навигация ——— -->
+    <nav id="bottom-nav" class="bottom-nav">
+      <button class="nav-btn active" data-tab="tab-race">
+        <span class="nav-btn__icon">🏁</span>
+        <span class="nav-btn__label">Заезд</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-history">
+        <span class="nav-btn__icon">📋</span>
+        <span class="nav-btn__label">История</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-setups">
+        <span class="nav-btn__icon">⚙️</span>
+        <span class="nav-btn__label">Сетапы</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Toast-уведомление -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
