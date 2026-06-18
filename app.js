@@ -206,10 +206,33 @@ async function handleFormSubmit(e) {
     date:          new Date().toISOString(),
     track:         track,
     laptime:       laptime,
+    notes:         document.getElementById('input-notes').value.trim(),
+    
+    // Давление
     frontPressure: parseFloat(document.getElementById('slider-fp').value),
     rearPressure:  parseFloat(document.getElementById('slider-rp').value),
-    springRate:    parseInt(document.getElementById('slider-spring').value, 10),
-    notes:         document.getElementById('input-notes').value.trim()
+    
+    // Передняя ось
+    fTrack:        document.getElementById('input-f-track').value.trim(),
+    caster:        document.getElementById('select-caster').value,
+    camber:        document.getElementById('input-camber').value.trim(),
+    toe:           document.getElementById('input-toe').value.trim(),
+    ackermann:     document.getElementById('select-ackermann').value,
+    fRideHeight:   document.getElementById('select-f-rideheight').value,
+    fTorsion:      document.getElementById('select-f-torsion').value,
+    fHubs:         document.getElementById('input-f-hubs').value.trim(),
+    floorpan:      document.getElementById('select-floorpan').value,
+    
+    // Задняя ось
+    rTrack:        document.getElementById('input-r-track').value.trim(),
+    rAxle:         document.getElementById('select-r-axle').value,
+    rRideHeight:   document.getElementById('select-r-rideheight').value,
+    rHubs:         document.getElementById('input-r-hubs').value.trim(),
+    seatStays:     document.getElementById('input-seat-stays').value,
+    seatPos:       document.getElementById('input-seat-pos').value.trim(),
+    thirdBearing:  document.getElementById('select-third-bearing').value,
+    bumper:        document.getElementById('select-bumper').value,
+    rTorsion:      document.getElementById('select-r-torsion').value
   };
 
   try {
@@ -280,10 +303,32 @@ function renderHistory(races) {
         </div>
         <div class="race-card__date">${dateStr}</div>
         <div class="race-card__setup">
-          <div class="race-card__param">Давл. спер.: <span>${r.frontPressure.toFixed(2)}</span></div>
-          <div class="race-card__param">Давл. зад.: <span>${r.rearPressure.toFixed(2)}</span></div>
-          <div class="race-card__param">Пружины: <span>${r.springRate}</span></div>
+          <div class="race-card__param">Давл. спер.: <span>${r.frontPressure?.toFixed(2) || '1.00'}</span></div>
+          <div class="race-card__param">Давл. зад.: <span>${r.rearPressure?.toFixed(2) || '1.00'}</span></div>
         </div>
+        <details class="race-card__extended-setup">
+          <summary>Полный сетап</summary>
+          <div class="extended-setup-grid">
+            <div class="grid-header">Перед:</div><div></div>
+            <div>Колея:</div><div>${esc(r.fTrack)}</div>
+            <div>Кастор:</div><div>${esc(r.caster)}</div>
+            <div>Развал/Схожд:</div><div>${esc(r.camber)} / ${esc(r.toe)}</div>
+            <div>Аккерман:</div><div>${esc(r.ackermann)}</div>
+            <div>Клиренс/Полик:</div><div>${esc(r.fRideHeight)} / ${esc(r.floorpan)}</div>
+            <div>Торсион:</div><div>${esc(r.fTorsion)}</div>
+            <div>Ступицы:</div><div>${esc(r.fHubs)}</div>
+            
+            <div class="grid-header" style="margin-top: 8px;">Зад:</div><div></div>
+            <div>Колея:</div><div>${esc(r.rTrack)}</div>
+            <div>Ось:</div><div>${esc(r.rAxle)}</div>
+            <div>Клиренс:</div><div>${esc(r.rRideHeight)}</div>
+            <div>Торсион:</div><div>${esc(r.rTorsion)}</div>
+            <div>Ступицы:</div><div>${esc(r.rHubs)}</div>
+            <div>Сиденье (тяги):</div><div>${esc(r.seatPos)} (${esc(r.seatStays)})</div>
+            <div>3-й подшипник:</div><div>${esc(r.thirdBearing)}</div>
+            <div>Отбойник:</div><div>${esc(r.bumper)}</div>
+          </div>
+        </details>
         ${r.notes ? `<div class="race-card__notes">${esc(r.notes)}</div>` : ''}
         <button class="race-card__delete" data-id="${r.id}">Удалить</button>
       </div>`;
@@ -316,11 +361,33 @@ function renderSetups(races) {
     <div class="setup-card" style="animation-delay:${i * .06}s">
       <div class="setup-card__track">🏁 ${esc(r.track)}</div>
       <div class="setup-card__params">
-        <div>Давл. спер.: <span>${r.frontPressure.toFixed(2)}</span></div>
-        <div>Давл. зад.: <span>${r.rearPressure.toFixed(2)}</span></div>
-        <div>Пружины: <span>${r.springRate}</span></div>
+        <div>Давл. спер.: <span>${r.frontPressure?.toFixed(2) || '1.00'}</span></div>
+        <div>Давл. зад.: <span>${r.rearPressure?.toFixed(2) || '1.00'}</span></div>
         <div>Время: <span>${esc(r.laptime)}</span></div>
       </div>
+      <details class="race-card__extended-setup" style="margin-top: 10px;">
+        <summary>Полный сетап</summary>
+        <div class="extended-setup-grid">
+          <div class="grid-header">Перед:</div><div></div>
+          <div>Колея:</div><div>${esc(r.fTrack)}</div>
+          <div>Кастор:</div><div>${esc(r.caster)}</div>
+          <div>Развал/Схожд:</div><div>${esc(r.camber)} / ${esc(r.toe)}</div>
+          <div>Аккерман:</div><div>${esc(r.ackermann)}</div>
+          <div>Клиренс/Полик:</div><div>${esc(r.fRideHeight)} / ${esc(r.floorpan)}</div>
+          <div>Торсион:</div><div>${esc(r.fTorsion)}</div>
+          <div>Ступицы:</div><div>${esc(r.fHubs)}</div>
+          
+          <div class="grid-header" style="margin-top: 8px;">Зад:</div><div></div>
+          <div>Колея:</div><div>${esc(r.rTrack)}</div>
+          <div>Ось:</div><div>${esc(r.rAxle)}</div>
+          <div>Клиренс:</div><div>${esc(r.rRideHeight)}</div>
+          <div>Торсион:</div><div>${esc(r.rTorsion)}</div>
+          <div>Ступицы:</div><div>${esc(r.rHubs)}</div>
+          <div>Сиденье (тяги):</div><div>${esc(r.seatPos)} (${esc(r.seatStays)})</div>
+          <div>3-й подшипник:</div><div>${esc(r.thirdBearing)}</div>
+          <div>Отбойник:</div><div>${esc(r.bumper)}</div>
+        </div>
+      </details>
     </div>`).join('');
 }
 

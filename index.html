@@ -41,40 +41,157 @@
         </div>
 
         <!-- Разделитель: Сетап -->
-        <div class="section-divider">Сетап карта</div>
+        <div class="section-divider">Настройка (Сетап)</div>
 
-        <!-- Давление спереди -->
-        <div class="field">
-          <label for="slider-fp">Давление спереди (бар)</label>
-          <div class="stepper">
-            <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="-1">−</button>
-            <input id="slider-fp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
-            <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="1">+</button>
-            <span class="stepper__value" id="val-fp">1.00</span>
-          </div>
-        </div>
+        <!-- Секция 1: Давление -->
+        <details class="setup-section" open>
+          <summary class="setup-section__header">Давление колес</summary>
+          <div class="setup-section__content">
+            <div class="field">
+              <label for="slider-fp">Давление спереди (бар)</label>
+              <div class="stepper">
+                <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="-1">−</button>
+                <input id="slider-fp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
+                <button type="button" class="stepper__btn" data-target="slider-fp" data-dir="1">+</button>
+                <span class="stepper__value" id="val-fp">1.00</span>
+              </div>
+            </div>
 
-        <!-- Давление сзади -->
-        <div class="field">
-          <label for="slider-rp">Давление сзади (бар)</label>
-          <div class="stepper">
-            <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="-1">−</button>
-            <input id="slider-rp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
-            <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="1">+</button>
-            <span class="stepper__value" id="val-rp">1.00</span>
+            <div class="field">
+              <label for="slider-rp">Давление сзади (бар)</label>
+              <div class="stepper">
+                <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="-1">−</button>
+                <input id="slider-rp" type="range" min="0.5" max="2.0" step="0.05" value="1.0" />
+                <button type="button" class="stepper__btn" data-target="slider-rp" data-dir="1">+</button>
+                <span class="stepper__value" id="val-rp">1.00</span>
+              </div>
+            </div>
           </div>
-        </div>
+        </details>
 
-        <!-- Жёсткость пружин клапанов -->
-        <div class="field">
-          <label for="slider-spring">Жёсткость пружин клапанов</label>
-          <div class="stepper">
-            <button type="button" class="stepper__btn" data-target="slider-spring" data-dir="-1">−</button>
-            <input id="slider-spring" type="range" min="1" max="10" step="1" value="5" />
-            <button type="button" class="stepper__btn" data-target="slider-spring" data-dir="1">+</button>
-            <span class="stepper__value" id="val-spring">5</span>
+        <!-- Секция 2: Перед -->
+        <details class="setup-section">
+          <summary class="setup-section__header">Передняя ось</summary>
+          <div class="setup-section__content">
+            <div class="field">
+              <label for="input-f-track">Ширина колеи (проставки)</label>
+              <input id="input-f-track" type="text" placeholder="например: 2 большие, 1 малая" />
+            </div>
+            <div class="field">
+              <label for="select-caster">Кастор</label>
+              <select id="select-caster">
+                <option value="Нейтральный" selected>Нейтральный</option>
+                <option value="Отрицательный">Отрицательный (-)</option>
+                <option value="Положительный">Положительный (+)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="input-camber">Развал</label>
+              <input id="input-camber" type="text" placeholder="например: -2 деления" />
+            </div>
+            <div class="field">
+              <label for="input-toe">Схождение (Toe)</label>
+              <input id="input-toe" type="text" placeholder="например: +1 мм (in/out)" />
+            </div>
+            <div class="field">
+              <label for="select-ackermann">Аккерман</label>
+              <select id="select-ackermann">
+                <option value="Стандарт" selected>Стандарт</option>
+                <option value="Меньше">Меньше</option>
+                <option value="Больше">Больше</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="select-f-rideheight">Клиренс</label>
+              <select id="select-f-rideheight">
+                <option value="Низкий">Низкий (шайбы внизу)</option>
+                <option value="Средний" selected>Средний (стандарт)</option>
+                <option value="Высокий">Высокий (шайбы вверху)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="select-f-torsion">Передний торсион</label>
+              <select id="select-f-torsion">
+                <option value="Снят" selected>Снят</option>
+                <option value="Мягкий">Мягкий</option>
+                <option value="Плоский">Плоский</option>
+                <option value="Жесткий">Жесткий</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="input-f-hubs">Передние ступицы</label>
+              <input id="input-f-hubs" type="text" placeholder="например: магний 90мм" />
+            </div>
+            <div class="field">
+              <label for="select-floorpan">Затяжка полика</label>
+              <select id="select-floorpan">
+                <option value="Затянута" selected>Затянута</option>
+                <option value="Расслаблена">Расслаблена</option>
+              </select>
+            </div>
           </div>
-        </div>
+        </details>
+
+        <!-- Секция 3: Зад -->
+        <details class="setup-section">
+          <summary class="setup-section__header">Задняя ось</summary>
+          <div class="setup-section__content">
+            <div class="field">
+              <label for="input-r-track">Ширина колеи (мм)</label>
+              <input id="input-r-track" type="text" placeholder="например: 1400 мм" />
+            </div>
+            <div class="field">
+              <label for="select-r-axle">Жесткость оси</label>
+              <select id="select-r-axle">
+                <option value="Soft (S)">Soft (S)</option>
+                <option value="Medium (M)" selected>Medium (M)</option>
+                <option value="Hard (H)">Hard (H)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="select-r-rideheight">Клиренс</label>
+              <select id="select-r-rideheight">
+                <option value="Низкий">Низкий (кассеты высоко)</option>
+                <option value="Средний" selected>Средний (стандарт)</option>
+                <option value="Высокий">Высокий (кассеты низко)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="input-r-hubs">Задние ступицы</label>
+              <input id="input-r-hubs" type="text" placeholder="например: магний 95мм" />
+            </div>
+            <div class="field">
+              <label for="input-seat-stays">Тяги сиденья (кол-во)</label>
+              <input id="input-seat-stays" type="number" min="0" max="6" step="1" value="2" />
+            </div>
+            <div class="field">
+              <label for="input-seat-pos">Позиция сиденья</label>
+              <input id="input-seat-pos" type="text" placeholder="сдвиг, высота" />
+            </div>
+            <div class="field">
+              <label for="select-third-bearing">Третий подшипник</label>
+              <select id="select-third-bearing">
+                <option value="Затянут" selected>Затянут</option>
+                <option value="Расслаблен">Расслаблен</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="select-bumper">Затяжка отбойника</label>
+              <select id="select-bumper">
+                <option value="С люфтом" selected>С люфтом</option>
+                <option value="Затянута жестко">Затянута жестко</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="select-r-torsion">Задний торсион</label>
+              <select id="select-r-torsion">
+                <option value="Снят" selected>Снят</option>
+                <option value="Мягкий">Мягкий</option>
+                <option value="Жесткий">Жесткий</option>
+              </select>
+            </div>
+          </div>
+        </details>
 
         <!-- Заметки -->
         <div class="field">

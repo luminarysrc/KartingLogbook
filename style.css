@@ -141,6 +141,47 @@ body {
   padding-left: 2px;
 }
 
+/* ---------- Setup Sections (Accordions) ---------- */
+.setup-section {
+  background: var(--tg-theme-secondary-bg-color);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: var(--card-radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.setup-section__header {
+  padding: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none; /* Hide default arrow */
+}
+
+.setup-section__header::-webkit-details-marker {
+  display: none;
+}
+
+.setup-section__header::after {
+  content: '▼';
+  font-size: 0.8rem;
+  color: var(--tg-theme-hint-color);
+  transition: transform var(--transition-fast);
+}
+
+.setup-section[open] .setup-section__header::after {
+  transform: rotate(180deg);
+}
+
+.setup-section__content {
+  padding: 0 16px 8px 16px;
+  animation: fadeIn .3s ease;
+}
+
 /* ---------- Fields ---------- */
 .field {
   margin-bottom: 16px;
@@ -157,6 +198,8 @@ body {
 }
 
 .field input[type="text"],
+.field input[type="number"],
+.field select,
 .field textarea {
   width: 100%;
   padding: 12px 14px;
@@ -167,12 +210,24 @@ body {
   font-size: .95rem;
   outline: none;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .field input[type="text"]:focus,
+.field input[type="number"]:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: var(--tg-theme-button-color);
   box-shadow: 0 0 0 3px var(--glow-accent);
+}
+
+.field select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
 }
 
 .field textarea {
@@ -447,6 +502,53 @@ body {
 }
 
 .setup-card__params span {
+  color: var(--tg-theme-text-color);
+  font-weight: 600;
+}
+
+/* ---------- Extended Setup (Details) ---------- */
+.race-card__extended-setup summary {
+  color: var(--tg-theme-link-color);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 12px;
+  list-style: none;
+  user-select: none;
+}
+.race-card__extended-setup summary::-webkit-details-marker {
+  display: none;
+}
+.race-card__extended-setup summary::before {
+  content: '▶ ';
+  font-size: 0.7rem;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+.race-card__extended-setup[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.extended-setup-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 6px 12px;
+  font-size: .82rem;
+  color: var(--tg-theme-hint-color);
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  animation: fadeIn .3s ease;
+}
+
+.extended-setup-grid .grid-header {
+  color: var(--tg-theme-text-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.extended-setup-grid div:nth-child(even) {
   color: var(--tg-theme-text-color);
   font-weight: 600;
 }
