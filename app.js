@@ -293,16 +293,54 @@ async function handleFormSubmit(e) {
  * Сбрасывает форму к значениям по умолчанию.
  */
 function resetForm() {
-  document.getElementById('race-form').reset();
-  setSessionDate();
+  // Очищаем только время и заметки. 
+  // Настройки и название выезда оставляем, чтобы не вводить заново!
+  document.getElementById('input-laptime').value = '';
+  document.getElementById('input-notes').value = '';
+}
 
-  // Возвращаем ползунки к дефолтам
-  const sliders = document.querySelectorAll('#race-form input[type="range"]');
-  sliders.forEach((s) => {
-    // reset() не сбрасывает range — делаем вручную
-    s.value = s.defaultValue;
-    syncSliderValue(s);
-  });
+/**
+ * Заполняет форму последним сохранённым сетапом
+ * @param {Object} r
+ */
+function prefillFormWithLastSetup(r) {
+  const setVal = (id, val) => {
+    if (val !== undefined && val !== null && val !== '') {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    }
+  };
+
+  setVal('input-session-name', r.sessionName);
+  
+  setVal('input-fl-cold', r.flCold);
+  setVal('input-fl-hot', r.flHot);
+  setVal('input-fr-cold', r.frCold);
+  setVal('input-fr-hot', r.frHot);
+  setVal('input-rl-cold', r.rlCold);
+  setVal('input-rl-hot', r.rlHot);
+  setVal('input-rr-cold', r.rrCold);
+  setVal('input-rr-hot', r.rrHot);
+  
+  setVal('input-f-track', r.fTrack);
+  setVal('input-caster', r.caster);
+  setVal('input-camber', r.camber);
+  setVal('input-toe', r.toe);
+  setVal('select-ackermann', r.ackermann);
+  setVal('select-f-rideheight', r.fRideHeight);
+  setVal('select-f-torsion', r.fTorsion);
+  setVal('input-f-hubs', r.fHubs);
+  setVal('select-floorpan', r.floorpan);
+  
+  setVal('input-r-track', r.rTrack);
+  setVal('select-r-axle', r.rAxle);
+  setVal('select-r-rideheight', r.rRideHeight);
+  setVal('input-r-hubs', r.rHubs);
+  setVal('input-seat-stays', r.seatStays);
+  setVal('input-seat-pos', r.seatPos);
+  setVal('select-third-bearing', r.thirdBearing);
+  setVal('select-bumper', r.bumper);
+  setVal('select-r-torsion', r.rTorsion);
 }
 
 /**
@@ -323,10 +361,18 @@ function setSessionDate() {
 /**
  * Загружает данные и рендерит списки «Истории» и «Сетапов».
  */
+let isFormPrefilled = false;
+
 async function loadRaces() {
   const races = await getRaces();
   renderHistory(races);
   renderSetups(races);
+  
+  // Если есть сохраненные заезды, при первом запуске заполняем форму их параметрами
+  if (!isFormPrefilled && races.length > 0) {
+    prefillFormWithLastSetup(races[0]);
+    isFormPrefilled = true;
+  }
 }
 
 /**
