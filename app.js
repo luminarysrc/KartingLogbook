@@ -247,6 +247,10 @@ async function handleFormSubmit(e) {
     rrCold:        document.getElementById('input-rr-cold').value,
     rrHot:         document.getElementById('input-rr-hot').value,
     
+    // Шины (доп)
+    tireHeats:     document.getElementById('input-tire-heats').value,
+    tireBatch:     document.getElementById('input-tire-batch').value.trim(),
+    
     // Передняя ось
     fTrack:        document.getElementById('input-f-track').value.trim(),
     caster:        document.getElementById('input-caster').value.trim(),
@@ -321,6 +325,9 @@ function prefillFormWithLastSetup(r) {
   setVal('input-rl-hot', r.rlHot);
   setVal('input-rr-cold', r.rrCold);
   setVal('input-rr-hot', r.rrHot);
+  
+  setVal('input-tire-heats', r.tireHeats);
+  setVal('input-tire-batch', r.tireBatch);
   
   setVal('input-f-track', r.fTrack);
   setVal('input-caster', r.caster);
@@ -405,7 +412,11 @@ function renderHistory(races) {
         <details class="race-card__extended-setup">
           <summary>Полный сетап</summary>
           <div class="extended-setup-grid">
-            <div class="grid-header">Перед:</div><div></div>
+            <div class="grid-header">Шины:</div><div></div>
+            <div>Нагревы:</div><div>${esc(r.tireHeats)}</div>
+            <div>Партия:</div><div>${esc(r.tireBatch)}</div>
+            
+            <div class="grid-header" style="margin-top: 8px;">Перед:</div><div></div>
             <div>Колея:</div><div>${esc(r.fTrack)}</div>
             <div>Кастор:</div><div>${esc(r.caster)}</div>
             <div>Развал/Схожд:</div><div>${esc(r.camber)} / ${esc(r.toe)}</div>
@@ -460,7 +471,11 @@ function renderSetups(races) {
       <details class="race-card__extended-setup" style="margin-top: 10px;">
         <summary>Полный сетап</summary>
         <div class="extended-setup-grid">
-          <div class="grid-header">Перед:</div><div></div>
+          <div class="grid-header">Шины:</div><div></div>
+          <div>Нагревы:</div><div>${esc(r.tireHeats)}</div>
+          <div>Партия:</div><div>${esc(r.tireBatch)}</div>
+          
+          <div class="grid-header" style="margin-top: 8px;">Перед:</div><div></div>
           <div>Колея:</div><div>${esc(r.fTrack)}</div>
           <div>Кастор:</div><div>${esc(r.caster)}</div>
           <div>Развал/Схожд:</div><div>${esc(r.camber)} / ${esc(r.toe)}</div>
