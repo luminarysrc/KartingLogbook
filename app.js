@@ -455,10 +455,33 @@ function renderSetups(races) {
     return;
   }
 
-  // Без трассы просто выводим последние 10 сетапов
-  const setups = races.slice(0, 10);
+  // Фильтруем заезды, оставляя только уникальные сетапы
+  const seen = new Set();
+  const setups = [];
 
-  container.innerHTML = setups.map((r, i) => `
+  for (const r of races) {
+    const setupKey = JSON.stringify({
+      flCold: r.flCold, flHot: r.flHot, frCold: r.frCold, frHot: r.frHot,
+      rlCold: r.rlCold, rlHot: r.rlHot, rrCold: r.rrCold, rrHot: r.rrHot,
+      tireHeats: r.tireHeats, tireBatch: r.tireBatch,
+      fTrack: r.fTrack, caster: r.caster, camber: r.camber, toe: r.toe,
+      ackermann: r.ackermann, fRideHeight: r.fRideHeight, fTorsion: r.fTorsion,
+      fHubs: r.fHubs, floorpan: r.floorpan,
+      rTrack: r.rTrack, rAxle: r.rAxle, rRideHeight: r.rRideHeight,
+      rHubs: r.rHubs, seatStays: r.seatStays, seatPos: r.seatPos,
+      thirdBearing: r.thirdBearing, bumper: r.bumper, rTorsion: r.rTorsion
+    });
+
+    if (!seen.has(setupKey)) {
+      seen.add(setupKey);
+      setups.push(r);
+    }
+  }
+
+  // Выводим последние 20 уникальных сетапов
+  const setupsToRender = setups.slice(0, 20);
+
+  container.innerHTML = setupsToRender.map((r, i) => `
     <div class="setup-card" style="animation-delay:${i * .06}s">
       <div class="setup-card__track">🏎 ${esc(r.sessionName || r.track || 'Заезд')}</div>
       <div class="setup-card__params">
