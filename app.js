@@ -463,7 +463,7 @@ function renderSetups(races) {
     const setupKey = JSON.stringify({
       flCold: r.flCold, flHot: r.flHot, frCold: r.frCold, frHot: r.frHot,
       rlCold: r.rlCold, rlHot: r.rlHot, rrCold: r.rrCold, rrHot: r.rrHot,
-      tireHeats: r.tireHeats, tireBatch: r.tireBatch,
+      tireBatch: r.tireBatch,
       fTrack: r.fTrack, caster: r.caster, camber: r.camber, toe: r.toe,
       ackermann: r.ackermann, fRideHeight: r.fRideHeight, fTorsion: r.fTorsion,
       fHubs: r.fHubs, floorpan: r.floorpan,
